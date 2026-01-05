@@ -18,6 +18,8 @@ export interface ColumnDef<T> {
   cell?: (row: T) => ReactNode;
   sortable?: boolean;
   className?: string;
+  /** Hide this column on mobile card view */
+  hideOnMobile?: boolean;
 }
 
 export interface PaginationConfig {
@@ -34,6 +36,8 @@ export interface DataTableProps<T> {
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
   className?: string;
+  /** Custom mobile card renderer for responsive display */
+  mobileCardRender?: (row: T, onRowClick?: (row: T) => void) => ReactNode;
 }
 
 export function DataTable<T extends { id: string }>({
@@ -43,6 +47,7 @@ export function DataTable<T extends { id: string }>({
   onRowClick,
   emptyMessage = 'No data available',
   className,
+  mobileCardRender,
 }: DataTableProps<T>) {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -75,7 +80,28 @@ export function DataTable<T extends { id: string }>({
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="overflow-x-auto rounded-lg border border-border">
+      {/* Mobile Card View - shows on small screens when mobileCardRender is provided */}
+      {mobileCardRender && (
+        <div className="block md:hidden space-y-3">
+          {data.length === 0 ? (
+            <div className="rounded-lg border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+              {emptyMessage}
+            </div>
+          ) : (
+            data.map((row) => (
+              <div key={row.id}>
+                {mobileCardRender(row, onRowClick)}
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* Desktop Table View - hidden on mobile when mobileCardRender is provided */}
+      <div className={cn(
+        'overflow-x-auto rounded-lg border border-border',
+        mobileCardRender && 'hidden md:block'
+      )}>
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted">
@@ -141,29 +167,30 @@ export function DataTable<T extends { id: string }>({
         </table>
       </div>
 
+      {/* Pagination - responsive layout */}
       {pagination && totalPages > 1 && (
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted-foreground text-center sm:text-left">
             Showing {(pagination.page - 1) * pagination.pageSize + 1} to{' '}
             {Math.min(pagination.page * pagination.pageSize, pagination.total)} of{' '}
             {pagination.total} results
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <button
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Previous page"
             >
               <CaretLeft size={16} />
             </button>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground min-w-[100px] text-center">
               Page {pagination.page} of {totalPages}
             </span>
             <button
               onClick={() => pagination.onPageChange(pagination.page + 1)}
               disabled={pagination.page === totalPages}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Next page"
             >
               <CaretRight size={16} />

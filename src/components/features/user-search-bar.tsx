@@ -44,11 +44,12 @@ export function UserSearchBar({ onSearch }: UserSearchBarProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-3">
+      {/* Mobile: stack search and buttons, Desktop: single row */}
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="flex-1 relative">
           <Input
             type="search"
-            placeholder="Search by name, phone, email, or transaction ID..."
+            placeholder="Search by name, phone, or email..."
             icon={<MagnifyingGlass size={18} />}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -57,30 +58,35 @@ export function UserSearchBar({ onSearch }: UserSearchBarProps) {
           {(query || hasActiveFilters) && (
             <button
               onClick={clearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               <X size={18} />
             </button>
           )}
         </div>
 
-        <Button
-          variant={showFilters || hasActiveFilters ? 'primary' : 'outline'}
-          onClick={() => setShowFilters(!showFilters)}
-          className="gap-2"
-        >
-          <Funnel size={18} />
-          Filters
-          {hasActiveFilters && (
-            <span className="ml-1 px-1.5 py-0.5 text-xs bg-white/20 rounded">
-              {(filters.kycStatus !== 'all' ? 1 : 0) + (filters.status !== 'all' ? 1 : 0)}
-            </span>
-          )}
-        </Button>
+        {/* Buttons row - always horizontal */}
+        <div className="flex gap-2 sm:gap-3">
+          <Button
+            variant={showFilters || hasActiveFilters ? 'primary' : 'outline'}
+            onClick={() => setShowFilters(!showFilters)}
+            className="gap-2 flex-1 sm:flex-none"
+          >
+            <Funnel size={18} />
+            <span className="hidden sm:inline">Filters</span>
+            {hasActiveFilters && (
+              <span className="px-1.5 py-0.5 text-xs bg-white/20 rounded">
+                {(filters.kycStatus !== 'all' ? 1 : 0) + (filters.status !== 'all' ? 1 : 0)}
+              </span>
+            )}
+          </Button>
 
-        <Button variant="primary" onClick={handleSearch}>
-          Search
-        </Button>
+          <Button variant="primary" onClick={handleSearch} className="flex-1 sm:flex-none gap-2">
+            <MagnifyingGlass size={18} className="sm:hidden" />
+            <span className="hidden sm:inline">Search</span>
+            <span className="sm:hidden">Search</span>
+          </Button>
+        </div>
       </div>
 
       <AnimatePresence>

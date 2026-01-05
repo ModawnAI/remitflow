@@ -29,11 +29,48 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'RemitFlow',
+    default: 'RemitFlow - UK to Nigeria Money Transfer',
     template: '%s | RemitFlow',
   },
-  description: 'Send money to Nigeria as easy as sending a WhatsApp message',
-  keywords: ['remittance', 'UK to Nigeria', 'money transfer', 'WhatsApp', 'stablecoin'],
+  description: 'Send money to Nigeria as easy as sending a WhatsApp message. Fast, secure, and affordable remittance service with real-time tracking and the best exchange rates.',
+  keywords: ['remittance', 'UK to Nigeria', 'money transfer', 'WhatsApp', 'stablecoin', 'international transfer', 'send money', 'GBP to NGN'],
+  authors: [{ name: 'RemitFlow' }],
+  creator: 'RemitFlow',
+  publisher: 'RemitFlow',
+  metadataBase: new URL('https://remitflow-two.vercel.app'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    url: 'https://remitflow-two.vercel.app',
+    siteName: 'RemitFlow',
+    title: 'RemitFlow - UK to Nigeria Money Transfer',
+    description: 'Send money to Nigeria as easy as sending a WhatsApp message. Fast, secure, and affordable remittance with real-time tracking.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'RemitFlow - Send money to Nigeria',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RemitFlow - UK to Nigeria Money Transfer',
+    description: 'Send money to Nigeria as easy as sending a WhatsApp message. Fast, secure, and affordable.',
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({

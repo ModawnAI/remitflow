@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Eye, ArrowClockwise, ArrowUUpLeft, DotsThree } from '@phosphor-icons/react';
+import { Eye, ArrowClockwise, ArrowUUpLeft, DotsThree, CaretRight } from '@phosphor-icons/react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DataTable, StatusBadge, AmountDisplay, Avatar, type ColumnDef } from '@/components/ui';
 import type { Transaction } from '@/types';
@@ -19,6 +19,83 @@ export interface TransactionTableProps {
   onRetry?: (id: string) => void;
   onRefund?: (id: string) => void;
   className?: string;
+}
+
+/** Mobile card component for transaction display */
+function TransactionMobileCard({
+  transaction,
+  onRowClick
+}: {
+  transaction: Transaction;
+  onRowClick?: (transaction: Transaction) => void;
+}) {
+  return (
+    <div
+      onClick={() => onRowClick?.(transaction)}
+      className={cn(
+        'rounded-lg border border-border bg-card p-4 transition-colors',
+        onRowClick && 'cursor-pointer active:bg-muted/50'
+      )}
+    >
+      {/* Header: Sender + Status */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <Avatar name={transaction.senderName} size="sm" />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-foreground truncate">
+              {transaction.senderName}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {transaction.senderPhone}
+            </p>
+          </div>
+        </div>
+        <StatusBadge status={transaction.status} size="sm" />
+      </div>
+
+      {/* Amount Section */}
+      <div className="flex items-center justify-between mb-3 p-3 rounded-lg bg-muted/50">
+        <div>
+          <p className="text-xs text-muted-foreground mb-0.5">Sending</p>
+          <AmountDisplay
+            amount={transaction.sendAmount}
+            currency={transaction.sendCurrency}
+            size="sm"
+            className="font-semibold"
+          />
+        </div>
+        <CaretRight size={16} className="text-muted-foreground mx-2" />
+        <div className="text-right">
+          <p className="text-xs text-muted-foreground mb-0.5">Receiving</p>
+          <AmountDisplay
+            amount={transaction.receiveAmount}
+            currency={transaction.receiveCurrency}
+            size="sm"
+            className="font-semibold"
+          />
+        </div>
+      </div>
+
+      {/* Footer: Recipient + Date */}
+      <div className="flex items-center justify-between text-xs">
+        <div className="min-w-0 flex-1">
+          <span className="text-muted-foreground">To: </span>
+          <span className="text-foreground">{transaction.recipientName}</span>
+          <span className="text-muted-foreground"> ({transaction.recipientBank})</span>
+        </div>
+        <span className="text-muted-foreground shrink-0 ml-2">
+          {formatRelativeTime(transaction.createdAt)}
+        </span>
+      </div>
+
+      {/* Reference */}
+      <div className="mt-2 pt-2 border-t border-border">
+        <span className="font-mono text-xs text-muted-foreground">
+          Ref: {transaction.reference}
+        </span>
+      </div>
+    </div>
+  );
 }
 
 export function TransactionTable({
@@ -139,6 +216,12 @@ export function TransactionTable({
       onRowClick={handleRowClick}
       emptyMessage="No transactions found"
       className={className}
+      mobileCardRender={(row, onClick) => (
+        <TransactionMobileCard
+          transaction={row}
+          onRowClick={onClick}
+        />
+      )}
     />
   );
 }

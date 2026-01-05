@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Eye, CheckCircle, XCircle, DotsThree, Clock, Warning } from '@phosphor-icons/react';
+import { Eye, CheckCircle, XCircle, DotsThree, Clock, Warning, CaretRight } from '@phosphor-icons/react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DataTable, Avatar, type ColumnDef } from '@/components/ui';
 import type { KYCApplication, KYCStatus } from '@/types';
@@ -32,12 +32,106 @@ function getPriorityIndicator(application: KYCApplication) {
   const waitingHours = (Date.now() - new Date(application.submittedAt).getTime()) / (1000 * 60 * 60);
 
   if (waitingHours > 24) {
-    return { icon: Warning, color: 'text-error', label: 'Overdue' };
+    return { icon: Warning, color: 'text-error', label: 'Overdue', bgColor: 'bg-red-100' };
   }
   if (waitingHours > 12) {
-    return { icon: Clock, color: 'text-warning', label: 'Urgent' };
+    return { icon: Clock, color: 'text-warning', label: 'Urgent', bgColor: 'bg-amber-100' };
   }
   return null;
+}
+
+/** Mobile card component for KYC application display */
+function KYCMobileCard({
+  application,
+  onRowClick
+}: {
+  application: KYCApplication;
+  onRowClick?: (application: KYCApplication) => void;
+}) {
+  const priority = getPriorityIndicator(application);
+  const status = kycStatusMap[application.status];
+
+  return (
+    <div
+      onClick={() => onRowClick?.(application)}
+      className={cn(
+        'rounded-lg border border-border bg-card p-4 transition-colors',
+        onRowClick && 'cursor-pointer active:bg-muted/50'
+      )}
+    >
+      {/* Header: Priority + User info + Status */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          {priority && (
+            <div className={cn('p-1.5 rounded-full', priority.bgColor)} title={priority.label}>
+              <priority.icon size={14} className={priority.color} weight="fill" />
+            </div>
+          )}
+          <Avatar name={application.userName || application.userPhone} size="sm" />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-foreground truncate">
+              {application.userName || 'Unknown'}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {application.userPhone}
+            </p>
+          </div>
+        </div>
+        <span className={cn('inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium shrink-0', status.bgColor, status.color)}>
+          {status.label}
+        </span>
+      </div>
+
+      {/* Tier + Documents + Biometric row */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        <div className="p-2 rounded-lg bg-muted/50 text-center">
+          <span className="inline-flex rounded-full bg-secondary-100 px-2 py-0.5 text-xs font-medium capitalize text-secondary-700">
+            {application.tier}
+          </span>
+          <p className="text-xs text-muted-foreground mt-1">Tier</p>
+        </div>
+        <div className="p-2 rounded-lg bg-muted/50 text-center">
+          <p className="text-sm font-medium text-foreground">{application.documents.length}</p>
+          <p className="text-xs text-muted-foreground">
+            {application.documents.filter(d => d.status === 'approved').length} verified
+          </p>
+        </div>
+        <div className="p-2 rounded-lg bg-muted/50 text-center">
+          {application.biometricResult ? (
+            <>
+              <div className="flex items-center justify-center gap-1">
+                {application.biometricResult.passed ? (
+                  <CheckCircle size={14} className="text-success" weight="fill" />
+                ) : (
+                  <XCircle size={14} className="text-error" weight="fill" />
+                )}
+                <span className="text-sm font-medium">
+                  {application.biometricResult.matchScore}%
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">Biometric</p>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-muted-foreground">Not done</p>
+              <p className="text-xs text-muted-foreground">Biometric</p>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Footer: Submitted time */}
+      <div className="flex items-center justify-between text-xs pt-3 border-t border-border">
+        <span className="text-muted-foreground">
+          Submitted {formatRelativeTime(application.submittedAt)}
+        </span>
+        <div className="flex items-center gap-1 text-muted-foreground">
+          <span>Tap to review</span>
+          <CaretRight size={12} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function KYCReviewTable({
@@ -177,6 +271,9 @@ export function KYCReviewTable({
       onRowClick={handleRowClick}
       emptyMessage="No pending KYC applications"
       className={className}
+      mobileCardRender={(row, onClick) => (
+        <KYCMobileCard application={row} onRowClick={onClick} />
+      )}
     />
   );
 }
