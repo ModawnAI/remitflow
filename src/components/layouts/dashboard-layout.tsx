@@ -43,7 +43,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const handleSidebarToggle = () => setSidebarCollapsed(!sidebarCollapsed);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Sidebar */}
       <Sidebar
         collapsed={sidebarCollapsed}
@@ -84,14 +84,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         />
 
         {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6">
+        <main className="flex-1 p-4 sm:p-6 overflow-x-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="mx-auto max-w-7xl"
+              className="mx-auto max-w-7xl w-full"
             >
               {children}
             </motion.div>
