@@ -1,0 +1,981 @@
+@import 'tailwindcss';
+
+/* ================================================================
+   RemitFlow Design System - Minimalist Modern
+   ================================================================
+   Design Philosophy: Clarity through structure, character through bold detail.
+   A warm, near-monochrome palette amplified by a dual-tone accent gradient.
+   ================================================================ */
+
+@theme {
+  /* ============================================================
+     COLOR PALETTE
+     ============================================================ */
+
+  /* Primary Canvas & Text */
+  --color-background: #FAFAFA;
+  --color-foreground: #0F172A;
+
+  /* Secondary Surfaces */
+  --color-muted: #F1F5F9;
+  --color-muted-foreground: #64748B;
+
+  /* Accent Colors - The Signature Electric Blue */
+  --color-accent: #0052FF;
+  --color-accent-secondary: #4D7CFF;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-muted: rgba(0, 82, 255, 0.1);
+  --color-accent-strong: rgba(0, 82, 255, 0.15);
+
+  /* Structural Elements */
+  --color-border: #E2E8F0;
+  --color-border-accent: rgba(0, 82, 255, 0.3);
+  --color-card: #FFFFFF;
+  --color-ring: #0052FF;
+
+  /* Status Colors */
+  --color-success: #10B981;
+  --color-success-foreground: #FFFFFF;
+  --color-warning: #F59E0B;
+  --color-warning-foreground: #FFFFFF;
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-info: #3B82F6;
+  --color-info-foreground: #FFFFFF;
+
+  /* Inverted Section Colors */
+  --color-inverted-bg: #0F172A;
+  --color-inverted-text: #FAFAFA;
+  --color-inverted-muted: rgba(255, 255, 255, 0.7);
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+
+  /* Font Families */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-calistoga), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+
+  /* Font Sizes - Custom Scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 2.5rem;
+  --font-size-5xl: 3.25rem;
+  --font-size-6xl: 4rem;
+  --font-size-hero: 5.25rem;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.05;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 1.75;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.02em;
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.15em;
+
+  /* ============================================================
+     SPACING
+     ============================================================ */
+
+  --spacing-section-sm: 7rem;
+  --spacing-section-md: 9rem;
+  --spacing-section-lg: 11rem;
+
+  /* ============================================================
+     BORDER RADIUS
+     ============================================================ */
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 4rem;
+  --radius-full: 9999px;
+
+  /* ============================================================
+     SHADOWS
+     ============================================================ */
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.12);
+
+  /* Accent-Tinted Shadows */
+  --shadow-accent: 0 4px 14px rgba(0, 82, 255, 0.25);
+  --shadow-accent-lg: 0 8px 24px rgba(0, 82, 255, 0.35);
+  --shadow-accent-xl: 0 12px 32px rgba(0, 82, 255, 0.4);
+
+  /* Elevated Surface Shadows */
+  --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 10px 20px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+
+  /* ============================================================
+     TRANSITIONS
+     ============================================================ */
+
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 500ms;
+  --transition-entrance: 700ms;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ============================================================
+     LAYOUT DIMENSIONS
+     ============================================================ */
+
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 72px;
+  --header-height: 64px;
+
+  /* ============================================================
+     Z-INDEX SCALE
+     ============================================================ */
+
+  --z-sidebar: 40;
+  --z-sidebar-overlay: 35;
+  --z-header: 30;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-fixed: 200;
+  --z-modal-backdrop: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-tooltip: 600;
+  --z-toast: 700;
+
+  /* ============================================================
+     ANIMATION DURATIONS
+     ============================================================ */
+
+  --duration-float: 5s;
+  --duration-float-fast: 4s;
+  --duration-pulse: 2s;
+  --duration-rotate: 60s;
+  --duration-activity: 3s;
+}
+
+/* ================================================================
+   BASE STYLES
+   ================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+}
+
+/* ================================================================
+   TYPOGRAPHY UTILITIES
+   ================================================================ */
+
+/* Display Font (Calistoga) - Headlines */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Monospace Font (JetBrains Mono) - Labels, Badges */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Hero Headline - The largest, most impactful text */
+.text-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8vw, var(--font-size-hero));
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tighter);
+}
+
+/* Section Headlines */
+.text-section {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, var(--font-size-5xl));
+  line-height: var(--line-height-snug);
+}
+
+/* Card Titles */
+.text-card-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* Section Labels - Monospace, uppercase */
+.text-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Body Text Relaxed */
+.text-body {
+  line-height: var(--line-height-relaxed);
+}
+
+/* ================================================================
+   GRADIENT UTILITIES
+   ================================================================ */
+
+/* The Signature Gradient - Text */
+.gradient-text {
+  background: linear-gradient(to right, var(--color-accent), var(--color-accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The Signature Gradient - Background */
+.gradient-bg {
+  background: linear-gradient(to right, var(--color-accent), var(--color-accent-secondary));
+}
+
+/* Diagonal Gradient */
+.gradient-bg-diagonal {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+}
+
+/* Gradient Border Effect (use with nested div) */
+.gradient-border {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  padding: 2px;
+  border-radius: var(--radius-xl);
+}
+
+.gradient-border > * {
+  background: var(--color-card);
+  border-radius: calc(var(--radius-xl) - 2px);
+}
+
+/* Gradient Underline for Headlines */
+.gradient-underline {
+  position: relative;
+}
+
+.gradient-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  height: 0.75rem;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(to right, rgba(0, 82, 255, 0.15), rgba(77, 124, 255, 0.1));
+}
+
+@media (min-width: 768px) {
+  .gradient-underline::after {
+    bottom: -0.5rem;
+    height: 1rem;
+  }
+}
+
+/* ================================================================
+   TEXTURE PATTERNS
+   ================================================================ */
+
+/* Dot Pattern for Dark Sections */
+.texture-dots {
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.03;
+}
+
+/* Radial Glow - Accent Tinted */
+.glow-accent {
+  position: relative;
+}
+
+.glow-accent::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  opacity: 0.05;
+  filter: blur(150px);
+  pointer-events: none;
+}
+
+.glow-accent-tl::before {
+  top: -200px;
+  left: -200px;
+}
+
+.glow-accent-tr::before {
+  top: -200px;
+  right: -200px;
+}
+
+.glow-accent-bl::before {
+  bottom: -200px;
+  left: -200px;
+}
+
+.glow-accent-br::before {
+  bottom: -200px;
+  right: -200px;
+}
+
+/* Gradient Overlay for Hero Sections */
+.overlay-gradient {
+  background: radial-gradient(ellipse at center, var(--color-accent-muted) 0%, transparent 70%);
+}
+
+/* ================================================================
+   SECTION STYLES
+   ================================================================ */
+
+/* Inverted Section - Dark Background */
+.section-inverted {
+  background-color: var(--color-inverted-bg);
+  color: var(--color-inverted-text);
+}
+
+.section-inverted .text-muted {
+  color: var(--color-inverted-muted);
+}
+
+/* Section Label Badge */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-accent);
+  background-color: var(--color-accent-muted);
+}
+
+.section-badge-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+.section-badge-text {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-accent);
+}
+
+/* ================================================================
+   CARD STYLES
+   ================================================================ */
+
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-slow) var(--ease-out),
+              transform var(--transition-slow) var(--ease-out);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-elevated {
+  box-shadow: var(--shadow-lg);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+/* Featured Card with Gradient Border */
+.card-featured {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  padding: 2px;
+  border-radius: var(--radius-xl);
+}
+
+.card-featured-inner {
+  height: 100%;
+  width: 100%;
+  background: var(--color-card);
+  border-radius: calc(var(--radius-xl) - 2px);
+}
+
+/* Card Hover Overlay Effect */
+.card-hover-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-accent-muted), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-slow) var(--ease-out);
+}
+
+.card-hover-overlay:hover::before {
+  opacity: 1;
+}
+
+/* ================================================================
+   BUTTON STYLES
+   ================================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base) var(--ease-out);
+  cursor: pointer;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button - Gradient */
+.btn-primary {
+  background: linear-gradient(to right, var(--color-accent), var(--color-accent-secondary));
+  color: var(--color-accent-foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent-lg);
+  filter: brightness(1.1);
+}
+
+/* Secondary Button - Outline */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-muted);
+  border-color: var(--color-border-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-muted-foreground);
+}
+
+.btn-ghost:hover {
+  color: var(--color-foreground);
+  background: var(--color-muted);
+}
+
+/* Button Sizes */
+.btn-sm {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  font-size: var(--font-size-sm);
+}
+
+.btn-md {
+  height: 2.75rem;
+  padding: 0 1rem;
+  font-size: var(--font-size-sm);
+}
+
+.btn-lg {
+  height: 3rem;
+  padding: 0 1.5rem;
+  font-size: var(--font-size-base);
+}
+
+.btn-xl {
+  height: 3.5rem;
+  padding: 0 2rem;
+  font-size: var(--font-size-base);
+}
+
+/* ================================================================
+   INPUT STYLES
+   ================================================================ */
+
+.input {
+  width: 100%;
+  height: 3rem;
+  padding: 0 1rem;
+  font-size: var(--font-size-base);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base) var(--ease-out),
+              box-shadow var(--transition-base) var(--ease-out);
+}
+
+.input::placeholder {
+  color: rgba(100, 116, 139, 0.5);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+}
+
+.input-lg {
+  height: 3.5rem;
+  padding: 0 1.25rem;
+}
+
+/* ================================================================
+   KEYFRAME ANIMATIONS
+   ================================================================ */
+
+/* Floating Animation - Gentle Y-axis bobbing */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* Pulsing Animation - For indicators and dots */
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+/* Slow Rotation - For decorative rings */
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade In Up - Entrance animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In - Simple fade */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scale In - For modals and popovers */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide In From Right */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Activity Pulse - Subtle pulse for live indicators */
+@keyframes activity-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Shimmer - Loading skeleton effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ================================================================
+   ANIMATION UTILITIES
+   ================================================================ */
+
+.animate-float {
+  animation: float var(--duration-float) ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float var(--duration-float-fast) ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse var(--duration-float) ease-in-out infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot var(--duration-pulse) ease-in-out infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow var(--duration-rotate) linear infinite;
+}
+
+.animate-activity {
+  animation: activity-pulse var(--duration-activity) ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--transition-entrance) var(--ease-out) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--transition-entrance) var(--ease-out) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in var(--transition-slow) var(--ease-out) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right var(--transition-slow) var(--ease-out) forwards;
+}
+
+/* Staggered Animation Delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ================================================================
+   SKELETON LOADING
+   ================================================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 0%,
+    var(--color-background) 50%,
+    var(--color-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ================================================================
+   FOCUS & ACCESSIBILITY
+   ================================================================ */
+
+/* Global focus ring */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-ring);
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  padding: 8px;
+  z-index: 100;
+  transition: top var(--transition-base);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-float,
+  .animate-float-fast,
+  .animate-float-reverse,
+  .animate-pulse-dot,
+  .animate-rotate-slow,
+  .animate-activity {
+    animation: none;
+  }
+}
+
+/* ================================================================
+   SCROLLBAR STYLING
+   ================================================================ */
+
+/* Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-muted);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-muted);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-muted);
+}
+
+/* ================================================================
+   SELECTION STYLING
+   ================================================================ */
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
+
+/* ================================================================
+   LAYOUT UTILITIES
+   ================================================================ */
+
+/* Container with max-width */
+.container-content {
+  width: 100%;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Section Spacing */
+.section-spacing {
+  padding-top: var(--spacing-section-sm);
+  padding-bottom: var(--spacing-section-sm);
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: var(--spacing-section-md);
+    padding-bottom: var(--spacing-section-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing {
+    padding-top: var(--spacing-section-lg);
+    padding-bottom: var(--spacing-section-lg);
+  }
+}
+
+/* Asymmetric Grid Layouts */
+.grid-asymmetric-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .grid-asymmetric-hero {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+  }
+}
+
+.grid-asymmetric-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .grid-asymmetric-content {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+  }
+}
+
+/* ================================================================
+   DECORATIVE ELEMENTS
+   ================================================================ */
+
+/* Large Quote Mark */
+.quote-mark {
+  font-size: 7.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.1;
+  font-family: var(--font-display);
+}
+
+/* Step Number */
+.step-number {
+  font-size: var(--font-size-4xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  opacity: 0.2;
+}
+
+/* Decorative Dashed Ring */
+.dashed-ring {
+  border: 2px dashed var(--color-border);
+  border-radius: 50%;
+}
+
+/* ================================================================
+   PRINT STYLES
+   ================================================================ */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .gradient-text {
+    background: none;
+    color: var(--color-accent);
+    -webkit-background-clip: unset;
+    background-clip: unset;
+  }
+}
+
+/* ================================================================
+   DARK MODE SUPPORT (Future)
+   ================================================================ */
+
+/* Uncomment and customize for dark mode support
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0F172A;
+    --color-foreground: #FAFAFA;
+    --color-muted: #1E293B;
+    --color-muted-foreground: #94A3B8;
+    --color-border: #334155;
+    --color-card: #1E293B;
+  }
+}
+*/

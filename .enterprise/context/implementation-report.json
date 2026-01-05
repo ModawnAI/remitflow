@@ -1,0 +1,100 @@
+{
+  "filesGenerated": 76,
+  "components": 49,
+  "pages": 15,
+  "configFiles": 5,
+  "outputDir": ".enterprise/output/remitflow",
+  "generatedAt": "2026-01-05T00:00:00.000Z",
+  "typeCheck": {
+    "passed": true
+  },
+  "lint": {
+    "passed": true
+  },
+  "summary": {
+    "projectName": "RemitFlow Admin Dashboard",
+    "description": "WhatsApp-based UK→Nigeria remittance admin dashboard for transaction monitoring, KYC management, and operations",
+    "techStack": {
+      "framework": "Next.js 16 (App Router)",
+      "styling": "Tailwind CSS v4",
+      "ui": {
+        "primary": "Aceternity UI",
+        "primitives": "Radix UI"
+      },
+      "icons": "Phosphor Icons",
+      "animation": "Framer Motion",
+      "backend": "Supabase (Auth, Database, Storage)"
+    },
+    "features": {
+      "dashboard": "Real-time metrics and transaction overview",
+      "transactions": "Transaction list, filters, and detail views",
+      "kyc": "KYC queue, review workflow, and decision panel",
+      "users": "User management with profile and recipient views",
+      "settings": "FX rates, limits, and notification configuration",
+      "reports": "Transaction and compliance report generation",
+      "auth": "Phone-based login with OTP verification"
+    },
+    "pages": [
+      "/ (Dashboard)",
+      "/transactions (Transaction List)",
+      "/transactions/[id] (Transaction Detail)",
+      "/kyc (KYC Queue)",
+      "/kyc/[userId] (KYC Review)",
+      "/users (User List)",
+      "/users/[id] (User Profile)",
+      "/settings (Settings - FX, Limits, Notifications)",
+      "/reports (Reports Generation)",
+      "/login (Phone Login)",
+      "/verify (OTP Verification)"
+    ],
+    "components": {
+      "layouts": [
+        "DashboardLayout",
+        "PageHeader"
+      ],
+      "features": [
+        "MetricsGrid",
+        "TransactionTable",
+        "TransactionFilters",
+        "TransactionHeader",
+        "TransactionTimeline",
+        "TransactionDetails",
+        "TransactionActions",
+        "AlertsList",
+        "KYCStatsBar",
+        "KYCReviewTable",
+        "KYCProgress",
+        "KYCDecisionPanel",
+        "DocumentCapture",
+        "SelfieCapture",
+        "DocumentViewer",
+        "BiometricResultCard",
+        "AMLScreeningResult",
+        "UserSearchBar",
+        "UserTable",
+        "UserProfileCard",
+        "UserInfoCard",
+        "RecipientsList",
+        "FXRateSettings",
+        "TransactionLimitSettings",
+        "NotificationSettings",
+        "ReportGenerator",
+        "SavedReportsList",
+        "LoginForm",
+        "OTPInput",
+        "KYCIntro"
+      ],
+      "ui": [
+        "Button",
+        "Input",
+        "Select",
+        "Textarea",
+        "Avatar",
+        "StatusBadge",
+        "AmountDisplay",
+        "DataTable",
+        "Card"
+      ]
+    }
+  }
+}
