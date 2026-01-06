@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Funnel, X, MagnifyingGlass } from '@phosphor-icons/react';
+import { Funnel, X, MagnifyingGlass, Lightning, Leaf, Bank } from '@phosphor-icons/react';
 import { Button, Input, Select, type SelectOption } from '@/components/ui';
-import type { TransactionFilters, TransactionStatus } from '@/types';
-import { cn } from '@/lib/utils';
+import type { TransactionFilters, TransactionStatus, RemittanceRail } from '@/types';
+import { cn, getRailDisplayName } from '@/lib/utils';
 
 export interface TransactionFiltersProps {
   filters?: TransactionFilters;
@@ -19,6 +19,13 @@ const statusOptions: SelectOption[] = [
   { value: 'completed', label: 'Completed' },
   { value: 'failed', label: 'Failed' },
   { value: 'refunded', label: 'Refunded' },
+];
+
+const railOptions: SelectOption[] = [
+  { value: 'all', label: 'All Rails' },
+  { value: 'traditional', label: 'Bank Transfer' },
+  { value: 'crypto_fast', label: 'Crypto Express' },
+  { value: 'crypto_cheap', label: 'Crypto Saver' },
 ];
 
 export function TransactionFilters({
@@ -52,12 +59,19 @@ export function TransactionFilters({
     onFilterChange({ ...filters, [field]: numValue });
   };
 
+  const handleRailChange = (value: string) => {
+    const newRail =
+      value === 'all' ? undefined : ([value] as RemittanceRail[]);
+    onFilterChange({ ...filters, rail: newRail });
+  };
+
   const clearFilters = () => {
     onFilterChange({});
   };
 
   const hasActiveFilters = !!(
     filters.status?.length ||
+    filters.rail?.length ||
     filters.dateFrom ||
     filters.dateTo ||
     filters.amountMin ||
@@ -85,6 +99,16 @@ export function TransactionFilters({
             value={filters.status?.[0] || 'all'}
             onValueChange={handleStatusChange}
             placeholder="Status"
+          />
+        </div>
+
+        {/* Rail Filter */}
+        <div className="w-full sm:w-44">
+          <Select
+            options={railOptions}
+            value={filters.rail?.[0] || 'all'}
+            onValueChange={handleRailChange}
+            placeholder="Payment Rail"
           />
         </div>
 
@@ -162,6 +186,18 @@ export function TransactionFilters({
                 onFilterChange({
                   ...filters,
                   status: filters.status?.filter((s) => s !== status),
+                })
+              }
+            />
+          ))}
+          {filters.rail?.map((rail) => (
+            <FilterTag
+              key={rail}
+              label={`Rail: ${getRailDisplayName(rail)}`}
+              onRemove={() =>
+                onFilterChange({
+                  ...filters,
+                  rail: filters.rail?.filter((r) => r !== rail),
                 })
               }
             />

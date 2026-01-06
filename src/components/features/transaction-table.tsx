@@ -1,11 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Eye, ArrowClockwise, ArrowUUpLeft, DotsThree, CaretRight } from '@phosphor-icons/react';
+import { Eye, ArrowClockwise, ArrowUUpLeft, DotsThree, CaretRight, Lightning, Leaf, Bank } from '@phosphor-icons/react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { DataTable, StatusBadge, AmountDisplay, Avatar, type ColumnDef } from '@/components/ui';
-import type { Transaction } from '@/types';
-import { formatRelativeTime, cn } from '@/lib/utils';
+import type { Transaction, RemittanceRail } from '@/types';
+import { formatRelativeTime, cn, getRailDisplayName } from '@/lib/utils';
 
 export interface TransactionTableProps {
   transactions: Transaction[];
@@ -19,6 +19,34 @@ export interface TransactionTableProps {
   onRetry?: (id: string) => void;
   onRefund?: (id: string) => void;
   className?: string;
+}
+
+/** Rail badge component showing transaction payment rail */
+function RailBadge({ rail }: { rail?: RemittanceRail }) {
+  if (!rail || rail === 'traditional') {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+        <Bank size={10} weight="bold" />
+        Bank
+      </span>
+    );
+  }
+
+  if (rail === 'crypto_fast') {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:bg-amber-950 dark:text-amber-400">
+        <Lightning size={10} weight="fill" />
+        Express
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+      <Leaf size={10} weight="fill" />
+      Saver
+    </span>
+  );
 }
 
 /** Mobile card component for transaction display */
@@ -37,7 +65,7 @@ function TransactionMobileCard({
         onRowClick && 'cursor-pointer active:bg-muted/50'
       )}
     >
-      {/* Header: Sender + Status */}
+      {/* Header: Sender + Rail + Status */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Avatar name={transaction.senderName} size="sm" />
@@ -50,7 +78,10 @@ function TransactionMobileCard({
             </p>
           </div>
         </div>
-        <StatusBadge status={transaction.status} size="sm" />
+        <div className="flex flex-col items-end gap-1.5">
+          <StatusBadge status={transaction.status} size="sm" />
+          <RailBadge rail={transaction.rail} />
+        </div>
       </div>
 
       {/* Amount Section */}
@@ -177,6 +208,11 @@ export function TransactionTable({
         </div>
       ),
       className: 'text-right',
+    },
+    {
+      id: 'rail',
+      header: 'Rail',
+      cell: (row) => <RailBadge rail={row.rail} />,
     },
     {
       id: 'status',

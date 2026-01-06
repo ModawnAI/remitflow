@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import type { RemittanceRail, CryptoTransactionDetails } from '@/types';
 
 const TransactionDetailPageContent = dynamic(
   () => import('@/components/pages/transaction-detail-page-content').then((mod) => mod.TransactionDetailPageContent),
@@ -52,6 +53,8 @@ interface Transaction {
   createdAt: string;
   completedAt?: string;
   events: TransactionEvent[];
+  rail?: RemittanceRail;
+  crypto?: CryptoTransactionDetails;
 }
 
 interface TransactionDetailPageWrapperProps {

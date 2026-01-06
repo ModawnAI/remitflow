@@ -28,6 +28,7 @@ export interface Transaction {
   updatedAt: string;
   completedAt?: string;
   failureReason?: string;
+  rail?: RemittanceRail;
 }
 
 export interface TransactionEvent {
@@ -182,4 +183,114 @@ export interface TransactionFilters {
   amountMin?: number;
   amountMax?: number;
   search?: string;
+  rail?: RemittanceRail[];
+}
+
+// Crypto Remittance Types
+export type RemittanceRail = 'traditional' | 'crypto_fast' | 'crypto_cheap';
+
+export type CryptoStage =
+  | 'initiated'
+  | 'gbp_received'
+  | 'converting_to_usd'
+  | 'usd_converted'
+  | 'converting_to_usdt'
+  | 'usdt_acquired'
+  | 'sending_to_offramp'
+  | 'offramp_processing'
+  | 'ngn_disbursed'
+  | 'completed'
+  | 'failed';
+
+export interface CryptoLeg {
+  id: string;
+  type: 'fiat_conversion' | 'stablecoin_mint' | 'blockchain_transfer' | 'offramp';
+  provider: CryptoProvider;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  inputAmount: number;
+  inputCurrency: string;
+  outputAmount: number;
+  outputCurrency: string;
+  fee: number;
+  txHash?: string;
+  startedAt?: string;
+  completedAt?: string;
+  estimatedDuration: number; // seconds
+}
+
+export type CryptoProvider =
+  | 'revolut'
+  | 'revolut_x'
+  | 'yellow_card'
+  | 'circle'
+  | 'moonpay';
+
+export interface CryptoTransactionDetails {
+  rail: RemittanceRail;
+  stage: CryptoStage;
+  legs: CryptoLeg[];
+  totalCryptoFees: number;
+  savingsVsTraditional: number;
+  savingsPercentage: number;
+  estimatedCompletionTime: string;
+  blockchainNetwork?: 'ethereum' | 'polygon' | 'tron' | 'solana';
+  stablecoin?: 'USDT' | 'USDC';
+}
+
+export interface CryptoRateQuote {
+  id: string;
+  rail: RemittanceRail;
+  sendAmount: number;
+  sendCurrency: string;
+  receiveAmount: number;
+  receiveCurrency: string;
+  effectiveRate: number;
+  breakdown: {
+    gbpToUsd: { rate: number; fee: number };
+    usdToUsdt: { rate: number; fee: number };
+    usdtToNgn: { rate: number; fee: number };
+  };
+  totalFees: number;
+  totalFeesPercentage: number;
+  estimatedTime: string;
+  estimatedTimeMinutes: number;
+  expiresAt: string;
+  savingsVsTraditional: {
+    amount: number;
+    percentage: number;
+  };
+}
+
+export interface RailComparison {
+  traditional: {
+    receiveAmount: number;
+    fees: number;
+    feePercentage: number;
+    estimatedTime: string;
+    estimatedMinutes: number;
+  };
+  cryptoFast: {
+    receiveAmount: number;
+    fees: number;
+    feePercentage: number;
+    estimatedTime: string;
+    estimatedMinutes: number;
+    savings: number;
+    savingsPercentage: number;
+  };
+  cryptoCheap: {
+    receiveAmount: number;
+    fees: number;
+    feePercentage: number;
+    estimatedTime: string;
+    estimatedMinutes: number;
+    savings: number;
+    savingsPercentage: number;
+  };
+}
+
+// Extended Transaction with optional crypto fields
+export interface TransactionWithCrypto extends Transaction {
+  rail: RemittanceRail;
+  crypto?: CryptoTransactionDetails;
 }

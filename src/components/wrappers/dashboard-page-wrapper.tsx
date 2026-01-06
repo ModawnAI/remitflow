@@ -1,24 +1,41 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import type { TransactionWithCrypto } from '@/types';
 
 const DashboardPageContent = dynamic(
-  () => import('@/components/pages/dashboard-page-content').then((mod) => mod.DashboardPageContent),
+  () =>
+    import('@/components/pages/dashboard-page-content').then(
+      (mod) => mod.DashboardPageContent
+    ),
   {
     ssr: false,
     loading: () => (
       <div className="flex min-h-screen bg-background">
         <div className="flex-1 p-4 sm:p-6 overflow-x-hidden">
-          <div className="animate-pulse space-y-8">
-            <div className="h-8 w-32 bg-muted rounded" />
+          <div className="animate-pulse space-y-6">
+            {/* Header skeleton */}
+            <div className="space-y-2">
+              <div className="h-8 w-48 bg-muted rounded" />
+              <div className="h-4 w-64 bg-muted rounded" />
+            </div>
+            {/* Metrics skeleton */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-24 bg-muted rounded-xl" />
+                <div key={i} className="h-28 bg-muted rounded-xl" />
               ))}
             </div>
+            {/* Main content skeleton */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 h-80 bg-muted rounded-xl" />
-              <div className="h-80 bg-muted rounded-xl" />
+              <div className="lg:col-span-2 space-y-6">
+                <div className="h-48 bg-muted rounded-xl" />
+                <div className="h-80 bg-muted rounded-xl" />
+              </div>
+              <div className="space-y-6">
+                <div className="h-64 bg-muted rounded-xl" />
+                <div className="h-48 bg-muted rounded-xl" />
+                <div className="h-40 bg-muted rounded-xl" />
+              </div>
             </div>
           </div>
         </div>
@@ -26,37 +43,6 @@ const DashboardPageContent = dynamic(
     ),
   }
 );
-
-interface Metric {
-  id: string;
-  title: string;
-  value: string;
-  change: number;
-  trend: 'up' | 'down';
-  icon: string;
-}
-
-interface Transaction {
-  id: string;
-  reference: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  sendAmount: number;
-  sendCurrency: string;
-  receiveAmount: number;
-  receiveCurrency: string;
-  exchangeRate: number;
-  fee: number;
-  senderId: string;
-  senderName: string;
-  senderPhone: string;
-  recipientId: string;
-  recipientName: string;
-  recipientBank: string;
-  recipientAccount: string;
-  createdAt: string;
-  updatedAt: string;
-  completedAt?: string;
-}
 
 interface Alert {
   id: string;
@@ -67,17 +53,13 @@ interface Alert {
 }
 
 interface DashboardPageWrapperProps {
-  metrics: Metric[];
-  transactions: Transaction[];
+  transactions: TransactionWithCrypto[];
   alerts: Alert[];
 }
 
-export function DashboardPageWrapper({ metrics, transactions, alerts }: DashboardPageWrapperProps) {
-  return (
-    <DashboardPageContent
-      metrics={metrics}
-      transactions={transactions}
-      alerts={alerts}
-    />
-  );
+export function DashboardPageWrapper({
+  transactions,
+  alerts,
+}: DashboardPageWrapperProps) {
+  return <DashboardPageContent transactions={transactions} alerts={alerts} />;
 }

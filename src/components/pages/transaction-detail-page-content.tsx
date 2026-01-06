@@ -7,7 +7,9 @@ import { TransactionHeader } from '@/components/features/transaction-header';
 import { TransactionTimeline } from '@/components/features/transaction-timeline';
 import { TransactionDetails } from '@/components/features/transaction-details';
 import { TransactionActions } from '@/components/features/transaction-actions';
-import type { TransactionStatus, TransactionEvent } from '@/types';
+import { CryptoProgressTracker } from '@/components/features/crypto-progress-tracker';
+import type { TransactionStatus, TransactionEvent, RemittanceRail, CryptoTransactionDetails } from '@/types';
+import { getRailDisplayName } from '@/lib/utils';
 
 interface DetailTransaction {
   id: string;
@@ -26,6 +28,8 @@ interface DetailTransaction {
   createdAt: string;
   completedAt?: string;
   events: TransactionEvent[];
+  rail?: RemittanceRail;
+  crypto?: CryptoTransactionDetails;
 }
 
 interface TransactionDetailPageContentProps {
@@ -33,12 +37,14 @@ interface TransactionDetailPageContentProps {
 }
 
 export function TransactionDetailPageContent({ transaction }: TransactionDetailPageContentProps) {
+  const isCryptoRail = transaction.rail && transaction.rail !== 'traditional';
+
   return (
     <ClientDashboardLayout>
       <div className="space-y-6">
         <PageHeader
           title={`Transaction ${transaction.id}`}
-          description="Transaction details and audit trail"
+          description={`Transaction details and audit trail${transaction.rail ? ` • ${getRailDisplayName(transaction.rail)}` : ''}`}
           backLink={'/transactions' as Route}
         />
 
@@ -46,9 +52,21 @@ export function TransactionDetailPageContent({ transaction }: TransactionDetailP
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-xl border border-neutral-200 p-6">
-              <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-                Transaction Timeline
+            {/* Show Crypto Progress Tracker for crypto rails */}
+            {isCryptoRail && transaction.crypto && (
+              <CryptoProgressTracker
+                crypto={transaction.crypto}
+                sendAmount={transaction.amountGBP}
+                sendCurrency="GBP"
+                receiveAmount={transaction.amountNGN}
+                receiveCurrency="NGN"
+              />
+            )}
+
+            {/* Show traditional timeline for non-crypto or as additional info */}
+            <div className="bg-card rounded-xl border border-border p-6">
+              <h2 className="text-lg font-semibold text-foreground mb-4">
+                {isCryptoRail ? 'Event History' : 'Transaction Timeline'}
               </h2>
               <TransactionTimeline events={transaction.events} />
             </div>

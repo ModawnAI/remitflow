@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { TransactionsPageWrapper } from '@/components/wrappers/transactions-page-wrapper';
+import type { RemittanceRail } from '@/types';
 
 export const metadata: Metadata = {
   title: 'Transactions | RemitFlow Admin',
@@ -7,6 +8,97 @@ export const metadata: Metadata = {
 };
 
 const mockTransactions = [
+  // Crypto Express (crypto_fast) - Completed
+  {
+    id: 'TXN-CRYPTO-001',
+    reference: 'CRYPTO-001',
+    status: 'completed' as const,
+    sendAmount: 750,
+    sendCurrency: 'GBP',
+    receiveAmount: 1207853,
+    receiveCurrency: 'NGN',
+    exchangeRate: 1610.47,
+    fee: 14.63,
+    senderId: 'user-006',
+    senderName: 'James Wilson',
+    senderPhone: '+44 7700 900005',
+    recipientId: 'rcpt-006',
+    recipientName: 'Chukwuemeka Nwosu',
+    recipientBank: 'GTBank',
+    recipientAccount: '****4521',
+    createdAt: new Date(Date.now() - 600000).toISOString(),
+    updatedAt: new Date(Date.now() - 120000).toISOString(),
+    completedAt: new Date(Date.now() - 120000).toISOString(),
+    rail: 'crypto_fast' as RemittanceRail,
+  },
+  // Crypto Express (crypto_fast) - Processing (offramp stage)
+  {
+    id: 'TXN-CRYPTO-002',
+    reference: 'CRYPTO-002',
+    status: 'processing' as const,
+    sendAmount: 500,
+    sendCurrency: 'GBP',
+    receiveAmount: 805235,
+    receiveCurrency: 'NGN',
+    exchangeRate: 1610.47,
+    fee: 9.75,
+    senderId: 'user-007',
+    senderName: 'Sarah Thompson',
+    senderPhone: '+44 7700 900006',
+    recipientId: 'rcpt-007',
+    recipientName: 'Adaeze Obi',
+    recipientBank: 'First Bank',
+    recipientAccount: '****7832',
+    createdAt: new Date(Date.now() - 420000).toISOString(),
+    updatedAt: new Date(Date.now() - 60000).toISOString(),
+    rail: 'crypto_fast' as RemittanceRail,
+  },
+  // Crypto Saver (crypto_cheap) - Processing (usdt stage)
+  {
+    id: 'TXN-CRYPTO-003',
+    reference: 'CRYPTO-003',
+    status: 'processing' as const,
+    sendAmount: 1200,
+    sendCurrency: 'GBP',
+    receiveAmount: 1947284,
+    receiveCurrency: 'NGN',
+    exchangeRate: 1622.74,
+    fee: 18.85,
+    senderId: 'user-008',
+    senderName: 'Michael Chen',
+    senderPhone: '+44 7700 900007',
+    recipientId: 'rcpt-008',
+    recipientName: 'Oluwaseun Adeyemi',
+    recipientBank: 'Zenith Bank',
+    recipientAccount: '****2198',
+    createdAt: new Date(Date.now() - 1800000).toISOString(),
+    updatedAt: new Date(Date.now() - 300000).toISOString(),
+    rail: 'crypto_cheap' as RemittanceRail,
+  },
+  // Crypto Saver (crypto_cheap) - Completed
+  {
+    id: 'TXN-CRYPTO-004',
+    reference: 'CRYPTO-004',
+    status: 'completed' as const,
+    sendAmount: 350,
+    sendCurrency: 'GBP',
+    receiveAmount: 567960,
+    receiveCurrency: 'NGN',
+    exchangeRate: 1622.74,
+    fee: 5.50,
+    senderId: 'user-009',
+    senderName: 'Emily Roberts',
+    senderPhone: '+44 7700 900008',
+    recipientId: 'rcpt-009',
+    recipientName: 'Ngozi Eze',
+    recipientBank: 'Access Bank',
+    recipientAccount: '****6543',
+    createdAt: new Date(Date.now() - 7200000).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000).toISOString(),
+    completedAt: new Date(Date.now() - 3600000).toISOString(),
+    rail: 'crypto_cheap' as RemittanceRail,
+  },
+  // Traditional Bank Transfer - Completed
   {
     id: 'TXN-001',
     reference: 'REF-001',
@@ -27,7 +119,9 @@ const mockTransactions = [
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     completedAt: new Date().toISOString(),
+    rail: 'traditional' as RemittanceRail,
   },
+  // Traditional Bank Transfer - Processing
   {
     id: 'TXN-002',
     reference: 'REF-002',
@@ -47,7 +141,9 @@ const mockTransactions = [
     recipientAccount: '****1234',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    rail: 'traditional' as RemittanceRail,
   },
+  // Traditional Bank Transfer - Pending
   {
     id: 'TXN-003',
     reference: 'REF-003',
@@ -67,7 +163,9 @@ const mockTransactions = [
     recipientAccount: '****9012',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    rail: 'traditional' as RemittanceRail,
   },
+  // Traditional Bank Transfer - Failed
   {
     id: 'TXN-004',
     reference: 'REF-004',
@@ -88,7 +186,9 @@ const mockTransactions = [
     createdAt: new Date(Date.now() - 86400000).toISOString(),
     updatedAt: new Date(Date.now() - 82800000).toISOString(),
     failureReason: 'Invalid account number',
+    rail: 'traditional' as RemittanceRail,
   },
+  // Traditional Bank Transfer - Completed (older)
   {
     id: 'TXN-005',
     reference: 'REF-005',
@@ -109,6 +209,7 @@ const mockTransactions = [
     createdAt: new Date(Date.now() - 172800000).toISOString(),
     updatedAt: new Date(Date.now() - 169200000).toISOString(),
     completedAt: new Date(Date.now() - 169200000).toISOString(),
+    rail: 'traditional' as RemittanceRail,
   },
 ];
 
